@@ -1,3 +1,5 @@
+![GRNU](GRNU.svg?v=2)
+
 ## DISCLAIMER: Not affiliated with Rust or GNU in any way
 
 # GRNU
