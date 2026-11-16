@@ -1,7 +1,3 @@
-<div align ="left">
-  <img src="GRNU.svg" alt="GRNU Logo" width="250">
-</div>
-
 ## DISCLAIMER: Not affiliated with Rust or GNU in any way
 
 # GRNU
