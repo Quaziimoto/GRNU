@@ -1,7 +1,24 @@
 use std::env;
 use std::fs;
-use std::os::unix::fs::{MetadataExt, PermissionsExt};
 use std::path::Path;
+
+/// Unix-style metadata fields: (512-byte blocks, link count, uid, gid, mode bits).
+#[cfg(unix)]
+fn unix_fields(meta: &fs::Metadata) -> (u64, u64, u32, u32, u32) {
+    use std::os::unix::fs::{MetadataExt, PermissionsExt};
+    (meta.blocks(), meta.nlink(), meta.uid(), meta.gid(), meta.permissions().mode())
+}
+
+/// Non-Unix fallback: approximate the fields, since Windows has no uid/gid or mode bits.
+#[cfg(not(unix))]
+fn unix_fields(meta: &fs::Metadata) -> (u64, u64, u32, u32, u32) {
+    let blocks = meta.len().div_ceil(512);
+    let mut mode = if meta.permissions().readonly() { 0o444 } else { 0o644 };
+    if meta.is_dir() {
+        mode |= 0o111;
+    }
+    (blocks, 1, 0, 0, mode)
+}
 
 fn main() {
     let mut long = false;
@@ -72,13 +89,14 @@ fn main() {
                     continue;
                 }
             };
-            total_blocks += meta.blocks();
+            let (blocks, nlink, uid, gid, mode) = unix_fields(&meta);
+            total_blocks += blocks;
             rows.push((
-                mode_string(&meta),
-                meta.nlink().to_string(),
-                meta.uid().to_string(),
-                meta.gid().to_string(),
-                meta.size().to_string(),
+                mode_string(&meta, mode),
+                nlink.to_string(),
+                uid.to_string(),
+                gid.to_string(),
+                meta.len().to_string(),
                 name.clone(),
             ));
         }
@@ -95,7 +113,7 @@ fn main() {
             );
         }
 
-        fn mode_string(meta: &fs::Metadata) -> String {
+        fn mode_string(meta: &fs::Metadata, mode: u32) -> String {
             let ft = meta.file_type();
             let kind = if ft.is_dir() {
                 'd'
@@ -105,7 +123,6 @@ fn main() {
                 '-'
             };
 
-            let mode = meta.permissions().mode();
             let mut s = String::with_capacity(10);
             s.push(kind);
             for shift in [6, 3, 0] {
