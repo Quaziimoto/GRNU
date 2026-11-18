@@ -30,6 +30,9 @@ To update to the latest version, run the same `cargo install` command again.
 ### rpwd
 - current tags: none
 - DESC: Prints Working Directory.
+### rcd
+- current tags: none
+- DESC: Changes current directory. However, it needs a wrapper to work, otherwise it will just print the current directory.
 
 ## Planned Future Features
 ### Immediate Planned Changes
