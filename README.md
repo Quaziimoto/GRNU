@@ -33,19 +33,21 @@ To update to the latest version, run the same `cargo install` command again.
 ### rcd
 - current tags: none
 - DESC: Changes current directory. However, it needs a wrapper to work, otherwise it will just print the current directory.
+### rcat
+- current tags: none
+- DESC: Prints the contents of a given file.
 
 ## Planned Future Features
 ### Immediate Planned Changes
-1. cat
-2. chmod/chown/chroot
-3. cp
-4. dd
-5. mkdir
-6. mv
-7. yes
-8. kill
-9. whoami
-10. rm
+1. chmod/chown/chroot
+2. cp
+3. dd
+4. mkdir
+5. mv
+6. yes
+7. kill
+8. whoami
+9. rm
 ### Ambitious Planned Changes
 (I wouldn't count on getting to this point, assuming this stays a personal project.)
 1. nano

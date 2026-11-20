@@ -18,7 +18,7 @@ fn get_file_content() -> Result<String, std::io::Error> {
 
 fn main() {
     match get_file_content() {
-        Ok(content) => print!"{}", content),
+        Ok(content) => print!("{}", content),
         Err(e) => {
             eprintln!("rcat: {e}");
             std::process::exit(1);
