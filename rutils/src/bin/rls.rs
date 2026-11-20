@@ -67,7 +67,7 @@ fn main() {
     }
 
     names.sort();
-
+    // lemme get a rls the loooong way
     if long {
         print_long(&path, &names);
     } else {
@@ -75,7 +75,7 @@ fn main() {
             println!("{}", name);
         }
     }
-
+    // lemme get a rls the loooong way
     fn print_long(dir: &str, names: &[String]) {
         let mut rows = Vec::new();
         let mut total_blocks = 0;
